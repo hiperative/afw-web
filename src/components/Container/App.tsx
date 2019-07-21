@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppWrapper, Title, Subtitle, AppFooter } from "./App.styled";
 import geolocation from "../../utils/geolocation";
 import Icon from "../Elements/Icon";
+import Loader from "../Elements/Loader";
 
 const content = {
   datetime: "2019-07-21T20:05:39.201Z",
@@ -19,6 +20,8 @@ const content = {
 };
 
 const App: React.FC = () => {
+  const [isLoading, setLoading] = useState(true);
+
   async function getLocation() {
     try {
       const res = await geolocation();
@@ -30,6 +33,9 @@ const App: React.FC = () => {
   }
   useEffect(() => {
     getLocation();
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
     return () => {
       console.log("Unmount");
     };
@@ -37,41 +43,41 @@ const App: React.FC = () => {
 
   return (
     <AppWrapper>
-      {/* Loading... */}
-      <div>Loading...</div>
-      {/* Header */}
-      <header>
-        <Icon icon={content.icon} />
-        <span>
-          {content.location} / {content.datetime}
-        </span>
-        <strong>
-          {content.temperature}º/{content.sensation}º
-        </strong>
-      </header>
-      {/* Content */}
-      <section>
-        <Title>
-          {content.title.split("|").map((line: string, index: number) => {
-            const color: string = content.highlight.includes(line)
-              ? content.color
-              : "inherit";
-
-            console.log("color", color);
-            return (
-              <span key={index} style={{ color }}>
-                {index === 0 ? null : <br />}
-                {line}
-              </span>
-            );
-          })}
-        </Title>
-        <Subtitle>{content.subtitle}</Subtitle>
-      </section>
-      {/* Footer */}
+      {!isLoading ? (
+        <>
+          <header>
+            <Icon icon={content.icon} />
+            <span>
+              {content.location} / {content.datetime}
+            </span>
+            <strong>
+              {content.temperature}º/{content.sensation}º
+            </strong>
+          </header>
+          <section>
+            <Title>
+              {content.title.split("|").map((line: string, index: number) => {
+                const color: string = content.highlight.includes(line)
+                  ? content.color
+                  : "inherit";
+                return (
+                  <span key={index} style={{ color }}>
+                    {index === 0 ? null : <br />}
+                    {line}
+                  </span>
+                );
+              })}
+            </Title>
+            <Subtitle>{content.subtitle}</Subtitle>
+          </section>
+        </>
+      ) : (
+        <Loader />
+      )}
       <AppFooter>
-        Inspired by <a href="#">@schneidertobias</a> & created by{" "}
-        <a href="#">@rafaelllycan</a>.
+        Inspired by{" "}
+        <a href="https://twitter.com/schneidertobias">@schneidertobias</a> &
+        created by <a href="https://twitter.com/rafaelllycan">@rafaelllycan</a>.
       </AppFooter>
     </AppWrapper>
   );

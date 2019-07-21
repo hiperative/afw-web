@@ -11,7 +11,8 @@ import {
   faSmog,
   faCloud,
   faCloudSun,
-  faCloudMoon
+  faCloudMoon,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 
 // Icons allowed
@@ -25,14 +26,16 @@ fontawesome.library.add(
   faSmog,
   faCloud,
   faCloudSun,
-  faCloudMoon
+  faCloudMoon,
+  faSpinner
 );
 
 interface IconProps {
   icon: any;
   size?: any;
+  animate?: boolean;
 }
 
-export default ({ icon, size = "5x" }: IconProps) => (
-  <FontAwesomeIcon icon={icon} size={size} />
+export default ({ icon, size = "5x", animate = false }: IconProps) => (
+  <FontAwesomeIcon icon={icon} size={size} spin={animate} />
 );

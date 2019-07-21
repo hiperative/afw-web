@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const AppWrapper = styled.main`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
   width: 100%;
   max-width: 1000px;
   margin: auto;
